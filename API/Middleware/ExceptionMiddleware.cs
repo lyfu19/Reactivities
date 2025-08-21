@@ -23,23 +23,6 @@ public class ExceptionMiddleware(ILogger<ExceptionMiddleware> logger, IHostEnvir
         }
     }
 
-    private async Task HandleException(HttpContext context, Exception ex)
-    {
-        logger.LogError(ex, ex.Message);
-        context.Response.ContentType = "application/json";
-        context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-
-        var response = env.IsDevelopment()
-            ? new AppException(context.Response.StatusCode, ex.Message, ex.StackTrace)
-            : new AppException(context.Response.StatusCode, ex.Message, null);
-
-        var options = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
-
-        var json = JsonSerializer.Serialize(response, options);
-
-        await context.Response.WriteAsync(json);
-    }
-
     private static async Task HandleValidationException(HttpContext context, ValidationException ex)
     {
         var validationErrors = new Dictionary<string, string[]>();
@@ -70,5 +53,22 @@ public class ExceptionMiddleware(ILogger<ExceptionMiddleware> logger, IHostEnvir
         };
 
         await context.Response.WriteAsJsonAsync(validationProblemDetails);
+    }
+
+    private async Task HandleException(HttpContext context, Exception ex)
+    {
+        logger.LogError(ex, ex.Message);
+        context.Response.ContentType = "application/json";
+        context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+
+        var response = env.IsDevelopment()
+            ? new AppException(context.Response.StatusCode, ex.Message, ex.StackTrace)
+            : new AppException(context.Response.StatusCode, ex.Message, null);
+
+        var options = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
+
+        var json = JsonSerializer.Serialize(response, options);
+
+        await context.Response.WriteAsync(json);
     }
 }
