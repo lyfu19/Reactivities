@@ -50,5 +50,6 @@ public class MappingProfiles : Profile
                     s => s.User.ImageUrl
                 )
             );
+        CreateMap<User, UserProfile>();
     }
 }

@@ -75,13 +75,16 @@ export const useActivities = (id?: string) => {
       await agent.post(`/activities/${id}/attend`);
     },
     onMutate: async (activityId: string) => {
+      // 1. 取消同 key 的请求
       await queryClient.cancelQueries({ queryKey: ["activities", activityId] });
 
+      // 2. 保存旧数据
       const prevActivity = queryClient.getQueryData<Activity>([
         "activities",
         activityId,
       ]);
 
+      // 3. 写入乐观数据
       queryClient.setQueryData<Activity>(
         ["activities", activityId],
         (oldActivity) => {
@@ -115,6 +118,7 @@ export const useActivities = (id?: string) => {
         }
       );
 
+      // 4. 返回 context（旧值，用于失败时回滚）
       return { prevActivity };
     },
     onError: (error, activityId, context) => {
