@@ -14,6 +14,24 @@ type Activity = {
   attendees: Profile[];
   isGoing: boolean;
   isHost: boolean;
+  hostImageUrl?: string;
+};
+
+type ActivityCreate = Omit<
+  | Activity
+  | "id"
+  | "isCancelled"
+  | "hostId"
+  | "hostDisplayName"
+  | "attendees"
+  | "isGoing"
+  | "isHost"
+  | "hostImageUrl"
+>;
+
+type Photo = {
+  id: string;
+  url: string;
 };
 
 type Profile = {
