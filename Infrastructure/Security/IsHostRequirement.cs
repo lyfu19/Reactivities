@@ -9,8 +9,10 @@ namespace Infrastructure.Security;
 
 public class IsHostRequirement : IAuthorizationRequirement { }
 
-public class IsHostRequirementHandler(AppDbContext dbContext, IHttpContextAccessor httpContextAccessor)
-    : AuthorizationHandler<IsHostRequirement>
+public class IsHostRequirementHandler(
+    AppDbContext dbContext,
+    IHttpContextAccessor httpContextAccessor
+) : AuthorizationHandler<IsHostRequirement>
 {
     protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, IsHostRequirement requirement)
     {

@@ -28,8 +28,10 @@ public class AccountController(SignInManager<User> signInManager) : BaseApiContr
 
         foreach (var error in result.Errors)
         {
+            // 错误通过 result.Errors 获取，并添加到 ModelState
             ModelState.AddModelError(error.Code, error.Description);
         }
+        // 读取 ModelState 里的错误并打包返回，因此前一步和这一步是“收集 → 返回”的关系
         return ValidationProblem();
     }
 
