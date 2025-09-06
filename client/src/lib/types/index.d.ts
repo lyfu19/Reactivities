@@ -39,6 +39,9 @@ type Profile = {
   displayName: string;
   bio?: string;
   imageUrl?: string;
+  following?: boolean;
+  followerCount?: number;
+  followingCount?: number;
 };
 
 type User = {

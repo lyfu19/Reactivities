@@ -11,8 +11,8 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250905000216_CommentEntity")]
-    partial class CommentEntity
+    [Migration("20250905000216_CommentEntityAdded")]
+    partial class CommentEntityAdded
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

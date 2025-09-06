@@ -9,6 +9,8 @@ public class MappingProfiles : Profile
 {
     public MappingProfiles()
     {
+        string? currentUserId = null;
+
         CreateMap<Activity, Activity>();
         CreateMap<EditActivityDto, Activity>();
         CreateMap<CreateActivityDto, Activity>();
@@ -25,6 +27,7 @@ public class MappingProfiles : Profile
                     s => s.Attendees.FirstOrDefault(x => x.IsHost)!.User.Id
                 )
             );
+        /*
         CreateMap<ActivityAttendee, UserProfile>()
             .ForMember(
                 d => d.Id,
@@ -50,7 +53,28 @@ public class MappingProfiles : Profile
                     s => s.User.ImageUrl
                 )
             );
-        CreateMap<User, UserProfile>();
+        */
+        CreateMap<ActivityAttendee, UserProfile>()
+            .IncludeMembers(s => s.User);
+        CreateMap<User, UserProfile>()
+            .ForMember(
+                d => d.FollowerCount,
+                o => o.MapFrom(
+                    s => s.Followers.Count
+                )
+            )
+            .ForMember(
+                d => d.FollowingCount,
+                o => o.MapFrom(
+                    s => s.Followings.Count
+                )
+            )
+            .ForMember(
+                d => d.Following,
+                o => o.MapFrom(
+                    s => s.Followers.Any(x => x.ObserverId == currentUserId)
+                )
+            );
         CreateMap<Comment, CommentDto>()
             .ForMember(
                 d => d.DisplayName,
