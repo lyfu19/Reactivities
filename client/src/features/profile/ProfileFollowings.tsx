@@ -15,23 +15,23 @@ export default function ProfileFollowings({ activeTab }: Props) {
 
   return (
     <Box>
-      <Box display="flex" flexDirection="column">
+      <Box display="flex">
         <Typography variant="h5">
           {isFollowerTab
             ? `People following ${profile?.displayName}`
             : `People ${profile?.displayName} is following`}
         </Typography>
-        <Divider sx={{ my: 2 }} />
-        {loadingFollowings ? (
-          <Typography>Loading...</Typography>
-        ) : (
-          <Box display="flex" mt={3} gap={3}>
-            {followings?.map((profile) => (
-              <ProfileCard key={profile.id} profile={profile} />
-            ))}
-          </Box>
-        )}
       </Box>
+      <Divider sx={{ my: 2 }} />
+      {loadingFollowings ? (
+        <Typography>Loading...</Typography>
+      ) : (
+        <Box display="flex" mt={3} gap={3}>
+          {followings?.map((profile) => (
+            <ProfileCard key={profile.id} profile={profile} />
+          ))}
+        </Box>
+      )}
     </Box>
   );
 }

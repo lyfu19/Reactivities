@@ -2,8 +2,8 @@ import { Group } from "@mui/icons-material";
 import {
   AppBar,
   Box,
+  CircularProgress,
   Container,
-  LinearProgress,
   MenuItem,
   Toolbar,
   Typography,
@@ -22,7 +22,7 @@ export default function Navbar() {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar
-        position="relative"
+        position="fixed"
         sx={{
           backgroundImage:
             "linear-gradient(135deg, #182a73 0%, #218aae 69%, #20a7ac 89%)",
@@ -40,6 +40,28 @@ export default function Navbar() {
                 <Typography variant="h4" fontWeight="bold">
                   Reactivities
                 </Typography>
+                <Observer>
+                  {() =>
+                    uiStore.isLoading ? (
+                      <Box
+                        sx={{
+                          position: "absolute",
+                          top: "50%",
+                          left: "105%",
+                          transform: "translateY(-50%)",
+                        }}
+                      >
+                        <CircularProgress
+                          size={20}
+                          thickness={7}
+                          sx={{
+                            color: "white",
+                          }}
+                        />
+                      </Box>
+                    ) : null
+                  }
+                </Observer>
               </MenuItem>
             </Box>
             <Box sx={{ display: "flex" }}>
@@ -59,23 +81,6 @@ export default function Navbar() {
             </Box>
           </Toolbar>
         </Container>
-
-        <Observer>
-          {() =>
-            uiStore.isLoading ? (
-              <LinearProgress
-                color="secondary"
-                sx={{
-                  position: "absolute",
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  height: 4,
-                }}
-              />
-            ) : null
-          }
-        </Observer>
       </AppBar>
     </Box>
   );

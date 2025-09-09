@@ -10,7 +10,7 @@ import {
 import { useStore } from "../../lib/hooks/useStore";
 import { observer } from "mobx-react-lite";
 
-const Counter = observer(function Counter() {
+const Counter = observer(() => {
   const { counterStore } = useStore();
 
   return (
