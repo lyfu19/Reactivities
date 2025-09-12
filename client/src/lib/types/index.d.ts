@@ -22,17 +22,16 @@ type Activity = {
   hostImageUrl?: string;
 };
 
-type ActivityCreate = Omit<
-  | Activity
-  | "id"
-  | "isCancelled"
-  | "hostId"
-  | "hostDisplayName"
-  | "attendees"
-  | "isGoing"
-  | "isHost"
-  | "hostImageUrl"
->;
+type ActivityCreate = {
+  title: string;
+  description: string;
+  category: string;
+  date: Date;
+  venue: string;
+  latitude: number;
+  longitude: number;
+  city?: string;
+};
 
 type Photo = {
   id: string;

@@ -41,7 +41,6 @@ export const useActivities = (id?: string) => {
       return response.data;
     },
     placeholderData: keepPreviousData,
-    staleTime: 1000 * 60 * 5,
     initialPageParam: null,
     getNextPageParam: (lastPage) => lastPage.nextCursor,
     enabled: !id && location.pathname === "/activities" && !!currentUser,
