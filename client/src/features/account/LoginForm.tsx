@@ -6,13 +6,17 @@ import { Box, Button, Paper, Typography } from "@mui/material";
 import { LockOpen } from "@mui/icons-material";
 import TextInput from "../../app/shared/components/TextInput";
 import { Link, useLocation, useNavigate } from "react-router";
+import { useState } from "react";
+import { toast } from "react-toastify";
 
 export default function LoginForm() {
+  const [notVerified, setNotVerified] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
-  const { loginUser } = useAccount();
+  const { loginUser, resendConfirmEmail } = useAccount();
   const {
     control,
+    watch,
     handleSubmit,
     formState: { isValid, isSubmitting },
   } = useForm<LoginSchema>({
@@ -26,7 +30,24 @@ export default function LoginForm() {
         const fromPath = location.state?.from?.pathname || "/activities";
         navigate(fromPath || "/activities");
       },
+      onError: (error) => {
+        if (error.message === "NotAllowed") {
+          setNotVerified(true);
+        }
+      },
     });
+  };
+
+  const email = watch("email");
+  const handleResendEmail = async () => {
+    try {
+      await resendConfirmEmail.mutateAsync({ email });
+      setNotVerified(false);
+      toast.success("Email sent - please check your email");
+    } catch (error) {
+      console.error(error);
+      toast.error("Problem sending email - please check email address");
+    }
   };
 
   return (
@@ -67,17 +88,32 @@ export default function LoginForm() {
       >
         Login
       </Button>
-      <Typography sx={{ textAlign: "center" }}>
-        Don't have an account?
-        <Typography
-          sx={{ ml: 2 }}
-          component={Link}
-          to="/register"
-          color="primary"
-        >
-          Sign up
+      {notVerified ? (
+        <Box display="flex" flexDirection="column" justifyContent="center">
+          <Typography textAlign="center" color="error">
+            Your email has not been verified. You can click the button to
+            re-send the verification email
+          </Typography>
+          <Button
+            disabled={resendConfirmEmail.isPending}
+            onClick={handleResendEmail}
+          >
+            Re-send email link
+          </Button>
+        </Box>
+      ) : (
+        <Typography sx={{ textAlign: "center" }}>
+          Don't have an account?
+          <Typography
+            sx={{ ml: 2 }}
+            component={Link}
+            to="/register"
+            color="primary"
+          >
+            Sign up
+          </Typography>
         </Typography>
-      </Typography>
+      )}
     </Paper>
   );
 }
