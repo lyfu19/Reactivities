@@ -3,7 +3,6 @@ import type { LoginSchema } from "../schemas/loginSchema";
 import agent from "../api/agent";
 import { useNavigate } from "react-router";
 import type { RegisterSchema } from "../schemas/registerSchema";
-import { toast } from "react-toastify";
 
 export const useAccount = () => {
   const queryClient = useQueryClient();
@@ -16,6 +15,34 @@ export const useAccount = () => {
     onSuccess: async () => {
       await queryClient.invalidateQueries({
         queryKey: ["user"],
+      });
+    },
+  });
+
+  const verifyEmail = useMutation({
+    mutationFn: async ({ userId, code }: { userId: string; code: string }) => {
+      await agent.get("/confirmEmail", {
+        params: {
+          userId,
+          code,
+        },
+      });
+    },
+  });
+
+  const resendConfirmEmail = useMutation({
+    mutationFn: async ({
+      email,
+      userId,
+    }: {
+      email?: string;
+      userId?: string | null;
+    }) => {
+      await agent.get("/account/resendConfirmEmail", {
+        params: {
+          email,
+          userId,
+        },
       });
     },
   });
@@ -44,11 +71,15 @@ export const useAccount = () => {
     mutationFn: async (creds: RegisterSchema) => {
       await agent.post("/account/register", creds);
     },
-    onSuccess: () => {
-      toast.success("Register successful - you can now login");
-      navigate("/login");
-    },
   });
 
-  return { loginUser, logoutUser, currentUser, loadingUserInfo, registerUser };
+  return {
+    loginUser,
+    logoutUser,
+    currentUser,
+    loadingUserInfo,
+    registerUser,
+    verifyEmail,
+    resendConfirmEmail,
+  };
 };

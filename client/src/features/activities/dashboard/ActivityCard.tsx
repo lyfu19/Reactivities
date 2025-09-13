@@ -90,16 +90,18 @@ export default function ActivityCard({ activity }: Prop) {
 
       <CardContent sx={{ pb: 2 }}>
         <Typography variant="body2">{activity.description}</Typography>
-        <Button
-          component={Link}
-          to={`/activities/${activity.id}`}
-          size="medium"
-          variant="contained"
-          sx={{ display: "flex", justifySelf: "self-end", borderRadius: 2 }}
-          onClick={() => {}}
-        >
-          View
-        </Button>
+        <Box sx={{ display: "flex" }}>
+          <Button
+            component={Link}
+            to={`/activities/${activity.id}`}
+            size="medium"
+            variant="contained"
+            sx={{ borderRadius: 2, marginLeft: "auto" }}
+            onClick={() => {}}
+          >
+            View
+          </Button>
+        </Box>
       </CardContent>
     </Card>
   );

@@ -9,11 +9,15 @@ import {
   registerSchema,
   type RegisterSchema,
 } from "../../lib/schemas/registerSchema";
+import { useState } from "react";
+import RegisterSuccess from "./RegisterSuccess";
 
 export default function RegisterForm() {
+  const [registerSuccess, setRegisterSuccess] = useState(false);
   const { registerUser } = useAccount();
   const {
     control,
+    watch,
     handleSubmit,
     formState: { isValid, isSubmitting },
     setError,
@@ -22,8 +26,11 @@ export default function RegisterForm() {
     resolver: zodResolver(registerSchema),
   });
 
+  const email = watch("email");
+
   const onSubmit = async (data: RegisterSchema) => {
     await registerUser.mutateAsync(data, {
+      onSuccess: () => setRegisterSuccess(true),
       onError: (error) => {
         if (Array.isArray(error)) {
           error.forEach((err) => {
@@ -38,6 +45,10 @@ export default function RegisterForm() {
       },
     });
   };
+
+  if (registerSuccess) {
+    return <RegisterSuccess email={email} />;
+  }
 
   return (
     <Paper
