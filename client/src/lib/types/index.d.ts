@@ -93,3 +93,9 @@ type LocationIQAddress = {
   country: string;
   country_code: string;
 };
+
+type ResetPassword = {
+  email: string;
+  resetCode: string;
+  newPassword: string;
+};
