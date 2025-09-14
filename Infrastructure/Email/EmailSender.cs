@@ -1,11 +1,12 @@
 using Domain;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Resend;
 
 namespace Infrastructure.Email;
 
-public class EmailSender(IServiceProvider provider) : IEmailSender<User>
+public class EmailSender(IServiceProvider provider, IConfiguration configuration) : IEmailSender<User>
 {
     public async Task SendConfirmationLinkAsync(User user, string email, string confirmationLink)
     {
@@ -19,9 +20,19 @@ public class EmailSender(IServiceProvider provider) : IEmailSender<User>
         await SendEmailAsync(email, subject, body);
     }
 
-    public Task SendPasswordResetCodeAsync(User user, string email, string resetCode)
+    public async Task SendPasswordResetCodeAsync(User user, string email, string resetCode)
     {
-        throw new NotImplementedException();
+        var subject = "Reset your password";
+        var link = $"{configuration["ClientAppUrl"]}/reset-password?email={email}&code={resetCode}";
+        var body = $@"
+            <p>Hi {user.DisplayName}</p>
+            <p>Please click this link to reset your password</p>
+            <p>
+                <a href='{link}'>Click to reset password</a>
+            </p>
+            <p>If you did not request this, you can ignore this email</p>
+        ";
+        await SendEmailAsync(email, subject, body);
     }
 
     public Task SendPasswordResetLinkAsync(User user, string email, string resetLink)
