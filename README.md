@@ -5,7 +5,7 @@ The project demonstrates a modern architecture with authentication, social login
 
 🌐 **Live Demo (Azure App Service)**: [https://alfie-reactivities.azurewebsites.net](https://alfie-reactivities.azurewebsites.net)
 
----
+
 
 ## ✨ Features
 
@@ -40,7 +40,7 @@ The project demonstrates a modern architecture with authentication, social login
   - Docker and GitHub Actions for CI/CD
   - Deployed on Azure App Service
 
----
+
 
 ## 👤 Demo Account
 
@@ -51,7 +51,7 @@ To explore the application without creating a new account, you can use the follo
 
 Note: This is a shared demo account. Please avoid changing the password or deleting data.
 
----
+
 
 ## 🛠 Tech Stack
 
@@ -76,7 +76,7 @@ Note: This is a shared demo account. Please avoid changing the password or delet
 - GitHub Actions
 - Azure App Service
 
----
+
 
 ## 🚀 Getting Started
 
@@ -118,7 +118,7 @@ Note: This is a shared demo account. Please avoid changing the password or delet
 Frontend → http://localhost:3000  
 API → https://localhost:5001
 
----
+
 
 ## 🔑 Highlights
 
