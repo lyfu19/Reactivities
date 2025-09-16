@@ -53,6 +53,7 @@ type User = {
   email: string;
   displayName: string;
   imageUrl?: string;
+  externalLogin: boolean;
 };
 
 type ActivityComment = {
