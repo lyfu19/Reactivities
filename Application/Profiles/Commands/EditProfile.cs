@@ -12,7 +12,7 @@ public class EditProfile
     public class Command : IRequest<Result<Unit>>
     {
         public string DisplayName { get; set; } = "";
-        public string Bio { get; set; } = "";
+        public string? Bio { get; set; }
     }
 
     public class Handler(AppDbContext dbContext, IUserAccessor userAccessor) : IRequestHandler<Command, Result<Unit>>
